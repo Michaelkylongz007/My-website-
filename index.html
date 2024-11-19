@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Text Generator</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  width: 90%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+}
+
+.page {
+  display: none;
+}
+
+.page.hidden {
+  display: none;
+}
+
+.page:not(.hidden) {
+  display: block;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background: #fda085;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #f6d365;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="page" id="page1">
+      <h1>Send Me Sweet Text</h1>
+      <input type="text" id="inputText" placeholder="Type here..." />
+      <button onclick="nextPage('page2')">Enter</button>
+    </div>
+
+    <div class="page hidden" id="page2">
+      <p>Thank you so much!</p>
+      <p>Wanna hear something sweet too?</p>
+      <button onclick="nextPage('page3')">Yes</button>
+      <button onclick="nextPage('page4')">No</button>
+    </div>
+
+    <div class="page hidden" id="page3">
+      <h2>Your Name</h2>
+      <input type="text" id="nameInput" placeholder="Enter your name" />
+      <div>
+        <label><input type="radio" name="gender" value="Boy" /> Boy</label>
+        <label><input type="radio" name="gender" value="Girl" /> Girl</label>
+      </div>
+      <button onclick="submitSweetText()">Submit</button>
+      <button onclick="goBack('page2')">Back</button>
+    </div>
+
+    <div class="page hidden" id="page4">
+      <h2>Okay, have a nice day :)</h2>
+      <button onclick="goBack('page2')">Back</button>
+    </div>
+  </div>
+
+  <script>
+    function nextPage(pageId) {
+  document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+  document.getElementById(pageId).classList.remove('hidden');
+}
+
+function goBack(previousPageId) {
+  nextPage(previousPageId);
+}
+
+function submitSweetText() {
+  const name = document.getElementById('nameInput').value.trim();
+  const gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+  if (!name || !gender) {
+    alert("Please fill out your name and select a gender.");
+    return;
+  }
+
+  let message;
+  if (gender === "Boy") {
+    message = `Hello ${name}, keep chasing your dreams and inspiring others!`;
+  } else {
+    message = `Hi ${name}, you are loved and cherished. Keep shining!`;
+  }
+
+  alert(message);
+  sendToDatabase(name, gender);
+}
+
+function sendToDatabase(name, gender) {
+  const data = {
+    name,
+    gender,
+    message: `User ${name} (${gender}) sent a sweet text.`
+  };
+
+  // Simulate sending data to your database or email
+  console.log("Data sent to database:", data);
+}
+  </script>
+</body>
+</html>
